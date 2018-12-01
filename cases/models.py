@@ -3,8 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-
-# Create your models here.
+from django.forms import ModelForm
 
 
 @python_2_unicode_compatible
@@ -25,6 +24,12 @@ class Case(models.Model):
 
     def __str__(self):
         return "Case {} is {}".format(self.id, self.status)
+
+
+class CaseForm(ModelForm):
+    class Meta:
+        model = Case
+        fields = ['file_id', 'name']
 
 
 @python_2_unicode_compatible
