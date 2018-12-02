@@ -2,9 +2,11 @@
 
 {% block content %}
 
+<h1>{{ case.name }}</h1>
+
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'cases:new' %}" method="post">
+<form action="{% url 'cases:new_stage' case.id%}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit" />

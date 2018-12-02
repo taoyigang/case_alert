@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if stage_list %}
+<div>
+    <ul>
+    {% for stage in stage_list %}
+        <li>DeadLine: {{ stage.deadline }}</li>
+        <li>Comments: {{ stage.comment }}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% else %}
+    <p>No Stage are available.</p>
+{% endif %}
+
+{% endblock %}

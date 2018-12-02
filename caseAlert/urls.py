@@ -20,9 +20,9 @@ from cases import views as case_views
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    url('', include('django.contrib.auth.urls')),
-    url(r'^accounts/login/$', auth_views.LoginView.as_view(template_name='login.html')),
+    url('/accounts', include('django.contrib.auth.urls')),
+    url(r'^accounts/login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^accounts/signup/$', case_views.signup, name='signup'),
-    url(r'^cases/', include('cases.urls')),
+    url(r'', include('cases.urls')),
     url(r'^admin/', admin.site.urls),
 ]

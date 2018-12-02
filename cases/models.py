@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.forms import ModelForm
+from django import forms
 
 
 @python_2_unicode_compatible
@@ -46,7 +47,22 @@ class Stage(models.Model):
         choices=STATUS_CHOICES,
         default='New',
     )
-    votes = models.IntegerField(default=0)
+    comment = models.TextField()
 
     def __str__(self):
         return "Stage {} is {}, belong to Case {}".format(self.id, self.status, self.case.id)
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class StageForm(ModelForm):
+    class Meta:
+        model = Stage
+        fields = ['deadline', 'comment']
+        widgets = {
+            'deadline': DateInput()
+        }
+
+
