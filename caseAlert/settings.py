@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,27 +83,18 @@ WSGI_APPLICATION = 'caseAlert.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'djangodb',
-#         'USER': 'ygt',
-#         'PASSWORD': '123321',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd7v95os7rdmoqc',
-        'USER': 'sdmsgqvrqprbjs',
-        'PASSWORD': 'fc49435a0f921f724b317bba3839ae3692c8ba1c746504db829b10152aa74e2e',
-        'HOST': 'postgres://sdmsgqvrqprbjs:fc49435a0f921f724b317bba3839ae3692c8ba1c746504db829b10152aa74e2e@ec2-54-197-249-140.compute-1.amazonaws.com:5432/d7v95os7rdmoqc',
-        'PORT': '5432',
+        'NAME': 'djangodb',
+        'USER': 'ygt',
+        'PASSWORD': '123321',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
