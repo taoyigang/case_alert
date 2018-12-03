@@ -37,7 +37,7 @@ def new(request):
         form = CaseForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/cases/')
+            return redirect('cases:index')
     else:
         form = CaseForm()
     return render(request, 'cases/new.html', {'form': form})
@@ -67,7 +67,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('/')
+            return redirect('cases:index')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
