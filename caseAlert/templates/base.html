@@ -5,11 +5,8 @@
   <meta charset="utf-8">
   <title>{% block title %}Case Alert{% endblock %}</title>
   <link rel="stylesheet" type="text/css" href="{% static '/cases/fullcalendar/fullcalendar.css' %}">
-  <script src="{% static '/cases/fullcalendar/lib/jquery.min.js' %}"></script>
-  <script src="{% static '/cases/fullcalendar/lib/jquery-ui.min.js' %}"></script>
-  <script src="{% static '/cases/fullcalendar/lib/moment.min.js' %}"></script>
-  <script src="{% static '/cases/fullcalendar/fullcalendar.min.js' %}"></script>
-  <script type="text/javascript" src="{% static '/cases/home.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static '/cases/bootstrap/css/bootstrap.min.css' %}">
+
 </head>
 <body>
   <header>
@@ -29,4 +26,10 @@
       <div>A footer</div>
   </footer>
 </body>
+  <script src="{% static '/cases/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static '/cases/fullcalendar/lib/jquery.min.js' %}"></script>
+  <script src="{% static '/cases/fullcalendar/lib/jquery-ui.min.js' %}"></script>
+  <script src="{% static '/cases/fullcalendar/lib/moment.min.js' %}"></script>
+  <script src="{% static '/cases/fullcalendar/fullcalendar.min.js' %}"></script>
+  <script type="text/javascript" src="{% static '/cases/home.js' %}"></script>
 </html>
