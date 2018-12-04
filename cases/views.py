@@ -23,6 +23,11 @@ def index(request):
 
 
 @login_required
+def home(request):
+    return render(request, 'cases/home.html')
+
+
+@login_required
 def case_detail(request, case_id):
     stage_list = Stage.objects.filter(case_id=case_id).all()
     context = {
