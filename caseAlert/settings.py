@@ -54,6 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'caseAlert.urls'
+LOGIN_URL = '/accountslogin'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accountslogin'
 
