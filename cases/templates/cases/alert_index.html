@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <button>
+        <a href="{% url 'cases:new_alert' case.id %}">New Alert</a>
+    </button>
+</div>
+{% if alert_list %}
+<div>
+    <ul>
+    {% for alert in alert_list %}
+        <li>DeadLine: {{ alert.deadline }}</li>
+        <li>Comments: {{ alert.comment }}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% else %}
+    <p>No Alert are available.</p>
+{% endif %}
+
+{% endblock %}

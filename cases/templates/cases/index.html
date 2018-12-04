@@ -3,13 +3,13 @@
 {% block content %}
 <div>
     <button>
-        <a href="{% url 'cases:new' %}">New</a>
+        <a href="{% url 'cases:new' %}">New Case</a>
     </button>
 </div>
 {% if latest_case_list %}
     <ul>
     {% for case in latest_case_list %}
-        <li><a href="{% url 'cases:case_detail' case.id %}">{{ case.name }}</a></li>
+        <li><a href="{% url 'cases:case_detail' case.id %}">{{ case.file_id }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
