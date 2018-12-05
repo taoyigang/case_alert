@@ -1,13 +1,34 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<form action="{% url 'cases:new' %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
-</form>
-
+<div class="row">
+    <div class='col-sm-6'>
+    <form action="{% url 'cases:new' %}" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            {{ form.file_id.errors }}
+            {{ form.file_id.label_tag }}
+            <div class='input-group date'>
+                {{ form.file_id }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.alert_date.errors }}
+            {{ form.alert_date.label_tag }}
+            <div class='input-group date'>
+                {{ form.alert_date }}
+                <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="{% static '/cases/new.js' %}"></script>
 {% endblock %}

@@ -57,7 +57,7 @@ def new_alert(request, case_id):
             new_s = form.save(commit=False)
             new_s.case_id = case_id
             new_s.save()
-            return HttpResponseRedirect('/'+case_id)
+            return redirect('cases:case_detail', case_id)
     else:
         case = Case.objects.get(id=case_id)
         form = AlertForm()
