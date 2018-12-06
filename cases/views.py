@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.contrib.auth import login, authenticate
@@ -62,6 +62,20 @@ def new_alert(request, case_id):
         case = Case.objects.get(id=case_id)
         form = AlertForm()
     return render(request, 'cases/new_alert.html', {'form': form, 'case': case})
+
+
+@login_required
+def get_case_and_alert(request):
+    start_date = request.GET.get('start')
+    end_date = request.GET.get('end')
+    case_list = Case.objects.filter(alert_date__range=(start_date, end_date))
+    alert_list = Alert.objects.filter(deadline__range=(start_date, end_date))
+    context = {}
+    for alert in alert_list:
+        context[alert.id] = {'title': alert.comment, 'start': alert.deadline.strftime('%Y-%m-%d %H:%M'), 'color': '#428cf4'}
+    for case in case_list:
+        context['case-'.format(case.id)] = {'title': case.file_id, 'start': case.alert_date.strftime('%Y-%m-%d %H:%M'), 'color': '#f45f42'}
+    return JsonResponse(context)
 
 
 def signup(request):

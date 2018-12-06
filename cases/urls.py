@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^new/$', views.new, name='new'),
     url(r'^(?P<case_id>[0-9]+)/$', views.case_detail, name='case_detail'),
     url(r'^(?P<case_id>[0-9]+)/alert_new', views.new_alert, name='new_alert'),
+    url(r'^api/get_case_and_alert/$', views.get_case_and_alert, name='get_case_and_alert'),
 ]
