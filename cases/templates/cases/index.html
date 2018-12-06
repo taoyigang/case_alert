@@ -10,6 +10,7 @@
     <ul>
     {% for case in latest_case_list %}
         <li><a href="{% url 'cases:case_detail' case.id %}">{{ case.file_id }}</a></li>
+        <li>{{ case.alert_date }}</li>
     {% endfor %}
     </ul>
 {% else %}
