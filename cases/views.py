@@ -35,7 +35,8 @@ def case_detail(request, case_id):
     alert_list = Alert.objects.filter(case_id=case_id).all()
     context = {
         'alert_list': alert_list,
-        'case_id': case_id
+        'case_id': case_id,
+        'case': case.last()
     }
     return render(request, 'cases/alert_index.html', context)
 

@@ -184,8 +184,9 @@
                 addButton = buttonRow.find('a');
             } else {
                 // Otherwise, insert it immediately after the last form:
-                $$.filter(':last').after('<a class="' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a>');
+                $$.filter(':last').after('<a class="btn btn-default ' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a>');
                 addButton = $$.filter(':last').next();
+                addButton.css('margin-top',15);
                 if (hideAddButton) addButton.hide();
             }
             addButton.click(function() {
@@ -199,6 +200,13 @@
                     updateElementIndex($(this), options.prefix, formCount);
                 });
                 totalForms.val(formCount + 1);
+                $('.datepicker input').each(function(index, ele) {
+                    $(this).datetimepicker({
+                        format : 'YYYY-MM-DD'
+                    });
+                });
+                $('.form-inline').addClass('m15');
+                $('.form-inline input').addClass('form-control');
                 // Check if we're above the minimum allowed number of forms -> show all delete link(s)
                 if (showDeleteLinks()){
                     $('a.' + delCssSelector).each(function(){$(this).show();});

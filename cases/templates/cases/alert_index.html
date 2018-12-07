@@ -4,12 +4,23 @@
 
 {% if alert_list %}
 <div>
-    <ul>
-    {% for alert in alert_list %}
-        <li>DeadLine: {{ alert.alert_date }}</li>
-        <li>Comments: {{ alert.comment }}</li>
-    {% endfor %}
-    </ul>
+    <h2>{{ case.file_id }}</h2>
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>Alert Date</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alert in alert_list %}
+            <tr>
+              <td>{{ alert.alert_date }}</td>
+              <td>{{ alert.comment }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 </div>
 {% else %}
     <p>No Alert are available.</p>
