@@ -10,8 +10,9 @@ from django.views.generic import CreateView
 from django.template import loader
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Case, Alert
+from .models import Case, Alert, Rule
 from .forms import SignUpForm, CaseForm, AlertForm, Alert_formset
+from datetime import datetime, timedelta
 
 
 @login_required
@@ -67,7 +68,7 @@ def get_case_and_alert(request):
             alert.comment = 'alert for {}'.format(alert.case.file_id)
         context[alert.id] = {'title': alert.comment, 'start': alert.alert_date.strftime('%Y-%m-%d'), 'color': '#428cf4'}
     for case in case_list:
-        context['case-'.format(case.id)] = {'title': case.file_id, 'start': case.deadline.strftime('%Y-%m-%d'), 'color': '#f45f42'}
+        context['{}'.format(case.file_id)] = {'title': case.file_id, 'start': case.deadline.strftime('%Y-%m-%d'), 'color': '#f45f42'}
     return JsonResponse(context)
 
 
@@ -104,6 +105,7 @@ class CaseCreateView(CreateView):
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+        form.fields["rule"].queryset = Rule.objects.filter(user=request.user)
         alert_form = Alert_formset()
         return self.render_to_response(
             self.get_context_data(form=form,
@@ -136,6 +138,11 @@ class CaseCreateView(CreateView):
         self.object.save()
         alert_form.instance = self.object
         alert_form.save()
+        if self.object.rule:
+            for day in self.object.rule.days:
+                alert_date = self.object.deadline - timedelta(days=day)
+                new_alert = Alert(alert_date=alert_date, case=self.object)
+                new_alert.save()
         return redirect('cases:index')
 
     def form_invalid(self, form, alert_form):
@@ -146,3 +153,23 @@ class CaseCreateView(CreateView):
         return self.render_to_response(
             self.get_context_data(form=form,
                                   alert_form=alert_form))
+
+
+class RuleCreate(CreateView):
+    model = Rule
+    fields = ['name', 'days']
+    success_url = '/'
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super(RuleCreate, self).form_valid(form)
+
+
+@login_required
+def rule_index(request):
+    latest_rule_list = Rule.objects.filter(user=request.user).order_by('-id')[:5]
+    context = {
+        'latest_rule_list': latest_rule_list,
+    }
+    return render(request, 'cases/rule_index.html', context)
