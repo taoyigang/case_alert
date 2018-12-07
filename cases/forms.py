@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms.models import inlineformset_factory
 from .models import Case, Alert
 
 
@@ -15,13 +16,14 @@ class SignUpForm(UserCreationForm):
 class CaseForm(forms.ModelForm):
 	class Meta:
 		model = Case
-		fields = ['file_id', 'alert_date']
+		exclude = ('user',)
+		# fields = ['file_id', 'deadline']
+
+
+Alert_formset = inlineformset_factory(Case, Alert, form=CaseForm, extra=1)
 
 
 class AlertForm(forms.ModelForm):
 	class Meta:
 		model = Alert
-		fields = ['deadline', 'comment']
-		widgets = {
-			'name': forms.CharField(),
-		}
+		fields = ['alert_date', 'comment']
