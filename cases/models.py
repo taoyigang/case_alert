@@ -14,18 +14,19 @@ class Rule(models.Model):
 	days = ArrayField(models.IntegerField(),help_text=u"eg:\'1,3,5\' will alert you 1/3/5 day before deadline")
 
 	def __str__(self):
-		return "Rule-{}".format(self.name)
+		return "{}- Alert {} days prior to the deadline".format(self.name, self.days)
 
 
 @python_2_unicode_compatible
 class Case(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	rule = models.ForeignKey(Rule, blank=True, null=True)
-	file_id = models.CharField(max_length=200)
+	case_id = models.CharField(max_length=200, unique=True)
 	deadline = models.DateTimeField()
+	color = models.CharField(max_length=20)
 
 	def __str__(self):
-		return "id-{}:{}".format(self.id, self.file_id)
+		return "id-{}:{}".format(self.id, self.case_id)
 
 
 @python_2_unicode_compatible
