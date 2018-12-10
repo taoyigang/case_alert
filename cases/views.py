@@ -11,8 +11,9 @@ from django.template import loader
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Case, Alert, Rule
-from .forms import SignUpForm, CaseForm, AlertForm, Alert_formset
+from .forms import SignUpForm, CaseForm, RuleForm, Alert_formset
 from datetime import datetime, timedelta
+import random
 
 
 @login_required
@@ -65,10 +66,10 @@ def get_case_and_alert(request):
     context = {}
     for alert in alert_list:
         if not alert.comment:
-            alert.comment = 'alert for {}'.format(alert.case.file_id)
-        context[alert.id] = {'title': alert.comment, 'start': alert.alert_date.strftime('%Y-%m-%d'), 'color': '#428cf4'}
+            alert.comment = 'alert for {}'.format(alert.case.case_id)
+        context[alert.id] = {'title': alert.comment, 'start': alert.alert_date.strftime('%Y-%m-%d'), 'color': alert.case.color}
     for case in case_list:
-        context['{}'.format(case.file_id)] = {'title': case.file_id, 'start': case.deadline.strftime('%Y-%m-%d'), 'color': '#f45f42'}
+        context['{}'.format(case.case_id)] = {'title': case.case_id, 'start': case.deadline.strftime('%Y-%m-%d'), 'color': case.color}
     return JsonResponse(context)
 
 
@@ -135,6 +136,7 @@ class CaseCreateView(CreateView):
 
         self.object = form.save(commit=False)
         self.object.user = self.request.user
+        self.object.color = self.__get_color_code()
         self.object.save()
         alert_form.instance = self.object
         alert_form.save()
@@ -154,16 +156,31 @@ class CaseCreateView(CreateView):
             self.get_context_data(form=form,
                                   alert_form=alert_form))
 
+    def __get_color_code(self):
+        color_set = ['#f44336', '#ffebee', '#ffcdd2','#ef9a9a','#e57373','#ef5350','#f44336','#e53935','#d32f2f','#c62828','#b71c1c',
+                    '#ff8a80','#ff5252','#ff1744','#d50000','#9c27b0','#f3e5f5','#e1bee7','#ce93d8','#ba68c8','#ab47bc','#9c27b0',
+                    '#8e24aa','#7b1fa2','#6a1b9a','#4a148c','#ea80fc','#e040fb','#d500f9','#aa00ff','#2196f3','#e3f2fd',
+                    '#bbdefb','#90caf9','#64b5f6','#42a5f5','#2196f3','#1e88e5','#1976d2','#1565c0','#0d47a1','#82b1ff','#448aff',
+                    '#2979ff','#2962ff','#00bcd4','#e0f7fa','#b2ebf2', '#80deea', '#4dd0e1', '#26c6da', '#00bcd4', '#00acc1',
+                    '#0097a7', '#00838f', '#006064', '#84ffff', '#18ffff', '#00e5ff', '#00b8d4', '#4caf50', '#e8f5e9', '#c8e6c9',
+                    '#a5d6a7', '#81c784', '#66bb6a', '#4caf50', '#43a047', '#388e3c', '#2e7d32', '#1b5e20', '#b9f6ca', '#69f0ae',
+                    '#00e676', '#00c853', '#795548', '#efebe9', '#d7ccc8', '#bcaaa4', '#a1887f', '#8d6e63', '#795548', '#6d4c41',
+                    '#5d4037', '#4e342e', '#3e2723', '#ffff8d', '#ffff00', '#ffea00', '#ffd600']
+        return random.choice(color_set)
 
-class RuleCreate(CreateView):
-    model = Rule
-    fields = ['name', 'days']
-    success_url = '/'
 
-    def form_valid(self, form):
-        user = self.request.user
-        form.instance.user = user
-        return super(RuleCreate, self).form_valid(form)
+@login_required
+def new_rule(request):
+    if request.method == 'POST':
+        form = RuleForm(request.POST)
+        if form.is_valid():
+            n_rule = form.save(commit=False)
+            n_rule.user = request.user
+            n_rule.save()
+            return redirect('cases:rule_index')
+    else:
+        form = RuleForm()
+    return render(request, 'cases/rule_form.html', {'form': form})
 
 
 @login_required

@@ -5,6 +5,7 @@ $( document ).ready(function() {
         });
     });
     $('.form-group input').addClass('form-control')
+    $('.form-group select').addClass('form-control')
     $('.form-inline').addClass('m15');
     $('.form-inline input').addClass('form-control')
 });

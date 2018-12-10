@@ -8,14 +8,14 @@
     <table class="table table-striped table-hover ">
       <thead>
         <tr>
-          <th>File ID</th>
+          <th>Case ID</th>
           <th>Deadline</th>
         </tr>
       </thead>
       <tbody>
         {% for case in latest_case_list %}
             <tr>
-              <td><a href="{% url 'cases:case_detail' case.id %}">{{ case.file_id }}</a></td>
+              <td><a href="{% url 'cases:case_detail' case.id %}">{{ case.case_id }}</a></td>
               <td>{{ case.deadline }}</td>
             </tr>
         {% endfor %}
