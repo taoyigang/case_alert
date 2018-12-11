@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^index/$', views.index, name='index'),
     url(r'^new/$', login_required(views.CaseCreateView.as_view()), name='new'),
+    url(r'^delete/(?P<pk>\d+)/$', login_required(views.CaseDelete.as_view()), name='delete'),
     url(r'^rules/new$', views.new_rule, name='new_rule'),
     url(r'^rules/index', views.rule_index, name='rule_index'),
     url(r'^(?P<case_id>[0-9]+)/$', views.case_detail, name='case_detail'),

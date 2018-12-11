@@ -6,8 +6,9 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 from django.template import loader
+from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Case, Alert, Rule
@@ -167,6 +168,12 @@ class CaseCreateView(CreateView):
                     '#00e676', '#00c853', '#795548', '#efebe9', '#d7ccc8', '#bcaaa4', '#a1887f', '#8d6e63', '#795548', '#6d4c41',
                     '#5d4037', '#4e342e', '#3e2723', '#ffff8d', '#ffff00', '#ffea00', '#ffd600']
         return random.choice(color_set)
+
+
+class CaseDelete(DeleteView):
+    model = Case
+    template_name = 'cases/delete.html'
+    success_url = reverse_lazy('cases:index')
 
 
 @login_required
