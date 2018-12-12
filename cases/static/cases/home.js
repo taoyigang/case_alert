@@ -15,16 +15,35 @@ $(function() {
             var events = [];
 
             Object.keys(response).forEach(function(key) {
-              events.push({
-                title: response[key]['title'],
-                start: response[key]['start'],
-                color: response[key]['color']
-              });
+              if ('deadline' in response[key]) {
+                events.push({
+                  title: response[key]['title'],
+                  start: response[key]['start'],
+                  color: response[key]['color'],
+                  deadline: response[key]['deadline'],
+                });
+              }
+              else {
+                events.push({
+                  title: response[key]['title'],
+                  start: response[key]['start'],
+                  color: response[key]['color'],
+                });
+              }
             });
             callback(events);
           }
         });
+      },
+    eventRender: function(event, element){
+      if ('deadline' in event) {
+        element.popover({
+          animation:true,
+          delay: 300,
+          content: 'deadline:'+event.deadline,
+          trigger: 'hover'
+        });
       }
+    }
   })
-
 });

@@ -68,10 +68,37 @@ def get_case_and_alert(request):
     for alert in alert_list:
         if not alert.comment:
             alert.comment = 'alert for {}'.format(alert.case.case_id)
-        context[alert.id] = {'title': alert.comment, 'start': alert.alert_date.strftime('%Y-%m-%d'), 'color': alert.case.color}
+        day_diff = (alert.case.deadline - alert.alert_date).days
+        context[alert.id] = {'title': "{} days before deadline".format(day_diff),
+                             'start': alert.alert_date.strftime('%Y-%m-%d'),
+                             'color': alert.case.color, 'deadline': alert.case.deadline.strftime('%Y-%m-%d')}
     for case in case_list:
-        context['{}'.format(case.case_id)] = {'title': case.case_id, 'start': case.deadline.strftime('%Y-%m-%d'), 'color': case.color}
+        context['{}'.format(case.case_id)] = {'title': '{}({})'.format(case.case_id, case.deadline.strftime('%Y-%m-%d')),
+                                              'start': case.deadline.strftime('%Y-%m-%d'), 'color': case.color}
     return JsonResponse(context)
+
+
+@login_required
+def new_rule(request):
+    if request.method == 'POST':
+        form = RuleForm(request.POST)
+        if form.is_valid():
+            n_rule = form.save(commit=False)
+            n_rule.user = request.user
+            n_rule.save()
+            return redirect('cases:rule_index')
+    else:
+        form = RuleForm()
+    return render(request, 'cases/rule_form.html', {'form': form})
+
+
+@login_required
+def rule_index(request):
+    latest_rule_list = Rule.objects.filter(user=request.user).order_by('-id')[:5]
+    context = {
+        'latest_rule_list': latest_rule_list,
+    }
+    return render(request, 'cases/rule_index.html', context)
 
 
 def signup(request):
@@ -174,26 +201,3 @@ class CaseDelete(DeleteView):
     model = Case
     template_name = 'cases/delete.html'
     success_url = reverse_lazy('cases:index')
-
-
-@login_required
-def new_rule(request):
-    if request.method == 'POST':
-        form = RuleForm(request.POST)
-        if form.is_valid():
-            n_rule = form.save(commit=False)
-            n_rule.user = request.user
-            n_rule.save()
-            return redirect('cases:rule_index')
-    else:
-        form = RuleForm()
-    return render(request, 'cases/rule_form.html', {'form': form})
-
-
-@login_required
-def rule_index(request):
-    latest_rule_list = Rule.objects.filter(user=request.user).order_by('-id')[:5]
-    context = {
-        'latest_rule_list': latest_rule_list,
-    }
-    return render(request, 'cases/rule_index.html', context)
