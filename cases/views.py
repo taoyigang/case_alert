@@ -45,20 +45,6 @@ def case_detail(request, case_id):
 
 
 @login_required
-def new(request):
-    if request.method == 'POST':
-        form = CaseForm(request.POST)
-        if form.is_valid():
-            new_case = form.save(commit=False)
-            new_case.user = request.user
-            new_case.save()
-            return redirect('cases:index')
-    else:
-        form = CaseForm()
-    return render(request, 'cases/new.html', {'form': form})
-
-
-@login_required
 def get_case_and_alert(request):
     start_date = request.GET.get('start')
     end_date = request.GET.get('end')
@@ -173,7 +159,7 @@ class CaseCreateView(CreateView):
                 alert_date = self.object.deadline - timedelta(days=day)
                 new_alert = Alert(alert_date=alert_date, case=self.object)
                 new_alert.save()
-        return redirect('cases:index')
+        return redirect('cases:home')
 
     def form_invalid(self, form, alert_form):
         """
