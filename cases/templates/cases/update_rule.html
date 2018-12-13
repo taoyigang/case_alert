@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if cases %}
+<h3>You can not <strong>EDIT</strong> this rule because it is used by <strong>{{ cases }}</strong></h3>
+<div>
+<a class="btn btn-default" href="{% url 'cases:rule_index'%}">Cancel</a>
+</div>
+{% else %}
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+    <a class="btn btn-default" href="{% url 'cases:rule_index'%}">Cancel</a>
+</form>
+{% endif %}
+
+{% endblock %}

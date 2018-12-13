@@ -10,6 +10,8 @@
         <tr>
           <th>Name</th>
           <th>Days</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -17,6 +19,8 @@
             <tr>
               <td>{{ rule.name }}</td>
               <td>{{ rule.days }}</td>
+              <td><a href="{% url 'cases:rule_update' rule.id %}">Edit</a></td>
+              <td><a href="{% url 'cases:rule_delete' rule.id %}">Delete</a></td>
             </tr>
         {% endfor %}
       </tbody>

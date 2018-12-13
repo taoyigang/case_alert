@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if cases %}
+<h3>You can not <strong>DELETE</strong> this rule because it is used by <strong>{{ cases }}</strong></h3>
+<div>
+<a class="btn btn-default" href="{% url 'cases:rule_index'%}">Cancel</a>
+</div>
+{% else %}
+<form action="" method="post">{% csrf_token %}
+    <p class="alert alert-danger">Are you sure you want to delete "{{ object.name }}"?</p>
+    <input class="btn btn-danger" type="submit" value="Confirm" />
+    <a class="btn btn-default" href="{% url 'cases:rule_index'%}">No, Cancel</a>
+</form>
+{% endif %}
+{% endblock %}

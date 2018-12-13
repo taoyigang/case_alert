@@ -6,7 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from django.template import loader
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
@@ -181,3 +181,30 @@ class CaseDelete(DeleteView):
     model = Case
     template_name = 'cases/delete.html'
     success_url = reverse_lazy('cases:index')
+
+
+class UpdateRule(UpdateView):
+    model = Rule
+    fields = ['name', 'days']
+    template_name = 'cases/update_rule.html'
+    success_url = reverse_lazy('cases:rule_index')
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateRule, self).get_context_data(**kwargs)
+        cases = Case.objects.filter(user=self.request.user, rule=self.object).all()
+        case_names = ', '.join([case.case_id for case in cases])
+        context['cases'] = case_names
+        return context
+
+
+class RuleDelete(DeleteView):
+    model = Rule
+    template_name = 'cases/rule_delete.html'
+    success_url = reverse_lazy('cases:rule_index')
+
+    def get_context_data(self, **kwargs):
+        context = super(RuleDelete, self).get_context_data(**kwargs)
+        cases = Case.objects.filter(user=self.request.user, rule=self.object).all()
+        case_names = ', '.join([case.case_id for case in cases])
+        context['cases'] = case_names
+        return context
