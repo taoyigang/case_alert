@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, DeleteView, UpdateView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import loader
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
@@ -19,11 +20,16 @@ import random
 
 @login_required
 def index(request):
-    latest_case_list = Case.objects.filter(user=request.user).order_by('-deadline')[:5]
-    context = {
-        'latest_case_list': latest_case_list,
-    }
-    return render(request, 'cases/index.html', context)
+    case_list = Case.objects.filter(user=request.user).order_by('-deadline').all()
+    paginator = Paginator(case_list, 5)
+    page = request.GET.get('page')
+    try:
+        cases = paginator.page(page)
+    except PageNotAnInteger:
+        cases = paginator.page(1)
+    except EmptyPage:
+        cases = paginator.page(paginator.num_pages)
+    return render(request, 'cases/index.html', {'cases': cases})
 
 
 @login_required
@@ -80,11 +86,16 @@ def new_rule(request):
 
 @login_required
 def rule_index(request):
-    latest_rule_list = Rule.objects.filter(user=request.user).order_by('-id')[:5]
-    context = {
-        'latest_rule_list': latest_rule_list,
-    }
-    return render(request, 'cases/rule_index.html', context)
+    rule_list = Rule.objects.filter(user=request.user).all()
+    paginator = Paginator(rule_list, 5)
+    page = request.GET.get('page')
+    try:
+        rules = paginator.page(page)
+    except PageNotAnInteger:
+        rules = paginator.page(1)
+    except EmptyPage:
+        rules = paginator.page(paginator.num_pages)
+    return render(request, 'cases/rule_index.html', {'rules': rules})
 
 
 def signup(request):

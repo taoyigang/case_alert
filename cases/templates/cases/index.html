@@ -4,7 +4,7 @@
 <div>
     <a class="btn btn-success" href="{% url 'cases:new' %}">New Case</a>
 </div>
-{% if latest_case_list %}
+{% if cases %}
     <table class="table table-striped table-hover ">
       <thead>
         <tr>
@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for case in latest_case_list %}
+        {% for case in cases %}
             <tr>
               <td><a href="{% url 'cases:case_detail' case.id %}">{{ case.case_id }}</a></td>
               <td>{{ case.deadline }}</td>
@@ -23,6 +23,21 @@
         {% endfor %}
       </tbody>
     </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if cases.has_previous %}
+                <a class="btn btn-primary" href="?page={{ cases.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ cases.number }} of {{ cases.paginator.num_pages }}.
+            </span>
+
+            {% if cases.has_next %}
+                <a class="btn btn-primary" href="?page={{ cases.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
 {% else %}
     <p>No Case are available.</p>
 {% endif %}
