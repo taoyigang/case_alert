@@ -21,7 +21,7 @@ import random
 @login_required
 def index(request):
     case_list = Case.objects.filter(user=request.user).order_by('-deadline').all()
-    paginator = Paginator(case_list, 5)
+    paginator = Paginator(case_list, 50)
     page = request.GET.get('page')
     try:
         cases = paginator.page(page)
@@ -87,7 +87,7 @@ def new_rule(request):
 @login_required
 def rule_index(request):
     rule_list = Rule.objects.filter(user=request.user).all()
-    paginator = Paginator(rule_list, 5)
+    paginator = Paginator(rule_list, 50)
     page = request.GET.get('page')
     try:
         rules = paginator.page(page)
