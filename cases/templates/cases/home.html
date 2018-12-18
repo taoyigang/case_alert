@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+<select id="case_selector">
+  <option value="all">All</option>
+</select>
 <div id='calendar'></div>
 <script type="text/javascript" src="{% static '/cases/home.js' %}"></script>
 {% endblock %}

@@ -63,10 +63,12 @@ def get_case_and_alert(request):
         day_diff = (alert.case.deadline - alert.alert_date).days
         context[alert.id] = {'title': "{} days before deadline".format(day_diff),
                              'start': alert.alert_date.strftime('%Y-%m-%d'),
-                             'color': alert.case.color, 'deadline': alert.case.deadline.strftime('%Y-%m-%d')}
+                             'color': alert.case.color, 'deadline': alert.case.deadline.strftime('%Y-%m-%d'),
+                             'id': str(alert.case.id), 'case_id': alert.case.case_id}
     for case in case_list:
         context['{}'.format(case.case_id)] = {'title': '{}({})'.format(case.case_id, case.deadline.strftime('%Y-%m-%d')),
-                                              'start': case.deadline.strftime('%Y-%m-%d'), 'color': case.color}
+                                              'start': case.deadline.strftime('%Y-%m-%d'), 'color': case.color,
+                                              'id': str(case.id), 'case_id': case.case_id}
     return JsonResponse(context)
 
 
