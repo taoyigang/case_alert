@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import loader
@@ -15,6 +15,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Case, Alert, Rule
 from .forms import SignUpForm, CaseForm, RuleForm, Alert_formset
 from datetime import datetime, timedelta
+from outlook.outlookservice import post_my_event
+from outlook.authhelper import get_access_token
 import random
 
 
@@ -160,7 +162,7 @@ class CaseCreateView(CreateView):
         associated Ingredients and Instructions and then redirects to a
         success page.
         """
-
+        access_token = get_access_token(self.request, self.request.build_absolute_uri(reverse('outlook:gettoken')))
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.color = self.__get_color_code()
@@ -172,6 +174,9 @@ class CaseCreateView(CreateView):
                 alert_date = self.object.deadline - timedelta(days=day)
                 new_alert = Alert(alert_date=alert_date, case=self.object)
                 new_alert.save()
+
+        if access_token:
+            post_my_event(access_token, self.object, is_case=True)
         return redirect('cases:home')
 
     def form_invalid(self, form, alert_form):

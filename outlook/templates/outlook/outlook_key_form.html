@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row center-block">
+    <div class="col-md-6">
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+            {{ field.label_tag }}<br>
+            {{ field.help_text|safe }}
+            {{ field }}
+            {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+            </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $('.form-group input').addClass('form-control')
+        $('.form-group select').addClass('form-control')
+        $('.form-inline').addClass('m15');
+        $('.form-inline input').addClass('form-control')
+    });
+</script>
+{% endblock %}

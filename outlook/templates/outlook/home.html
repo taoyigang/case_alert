@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron">
+  <h2>CaseAlert Outlook Sync</h2>
+  <p>Setup this feature will synchronize your case and alert to Outlook Calendar through Outlook APIs.</p>
+  <p class="text-danger">If you already have a outlook application key and want to use it
+    <a class="btn btn-primary" href="{% url 'outlook:new_outlook_key' %}" role="button">New Key</a>
+  </p>
+  <p class="text-danger">If you do not have key pair and want to generate it through outlook
+    <a class="btn btn-primary" href="https://apps.dev.microsoft.com/" data-linktype="external">Go to Outlook</a>
+  </p>
+</div>
+{% endblock %}
