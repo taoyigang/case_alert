@@ -60,13 +60,14 @@ def get_case_and_alert(request):
     alert_list = Alert.objects.filter(case__in=case_list, alert_date__range=(start_date, end_date))
     context = {}
     for alert in alert_list:
-        if not alert.comment:
-            alert.comment = 'alert for {}'.format(alert.case.case_id)
         day_diff = (alert.case.deadline - alert.alert_date).days
-        context[alert.id] = {'title': "{} days before deadline".format(day_diff),
-                             'start': alert.alert_date.strftime('%Y-%m-%d'),
+        context[alert.id] = {'start': alert.alert_date.strftime('%Y-%m-%d'),
                              'color': alert.case.color, 'deadline': alert.case.deadline.strftime('%Y-%m-%d'),
                              'id': str(alert.case.id), 'case_id': alert.case.case_id}
+        if not alert.comment:
+            context[alert.id]['title'] = "{}\n{} days before deadline".format(alert.case.case_id, day_diff)
+        else:
+            context[alert.id]['title'] = "{}\n{}".format(alert.case.case_id, alert.comment)
     for case in case_list:
         context['{}'.format(case.case_id)] = {'title': '{}({})'.format(case.case_id, case.deadline.strftime('%Y-%m-%d')),
                                               'start': case.deadline.strftime('%Y-%m-%d'), 'color': case.color,

@@ -19,6 +19,7 @@
         <li><a  href="{% url 'outlook:home' %}">Outlook</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a>Hello, {{ user.username }}</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
