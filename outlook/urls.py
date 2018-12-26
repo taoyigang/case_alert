@@ -5,7 +5,7 @@ from . import views
 app_name = 'outlook'
 urlpatterns = [
 	url(r'^$', views.home, name='home'),
-	url(r'^gettoken/$', views.gettoken, name='gettoken'),
+	url(r'^(?P<user_id>\d+)/gettoken/$', views.gettoken, name='gettoken'),
 	url(r'^events/$', views.events, name='events'),
 	url(r'^new/$', views.new_outlook_key, name='new_outlook_key'),
 	url(r'^tutorial/$', views.tutorial, name='tutorial'),

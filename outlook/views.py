@@ -15,20 +15,19 @@ from .models import OutlookKey
 
 @login_required
 def home(request):
-	redirect_uri = request.build_absolute_uri(reverse('outlook:gettoken'))
+	redirect_uri = request.build_absolute_uri(reverse('outlook:gettoken', kwargs={'user_id': request.user.id}))
 	# sign_in_url = get_signin_url(redirect_uri)
 	sign_in_url = '#'
 	context = {'signin_url': sign_in_url}
 	return render(request, 'outlook/home.html', context)
 
 
-def gettoken(request):
+def gettoken(request, user_id):
 	auth_code = request.GET['code']
-	redirect_uri = request.build_absolute_uri(reverse('outlook:gettoken'))
+	redirect_uri = request.build_absolute_uri(reverse('outlook:gettoken', kwargs={'user_id': user_id}))
 	outlook_key = OutlookKey.objects.filter(user=request.user, valid=False).first()
 	token = get_token_from_code(auth_code, redirect_uri, outlook_key.outlook_app_id, outlook_key.outlook_app_key)
 	access_token = token['access_token']
-	user = get_me(access_token)
 	refresh_token = token['refresh_token']
 	expires_in = token['expires_in']
 
@@ -51,7 +50,7 @@ def gettoken(request):
 
 
 def events(request):
-	access_token = get_access_token(request, request.build_absolute_uri(reverse('outlook:gettoken')))
+	access_token = get_access_token(request, request.build_absolute_uri(reverse('outlook:gettoken', kwargs={'user_id': request.user.id})))
 	# If there is no token in the session, redirect to home
 	if not access_token:
 		return HttpResponse('something goes really wrong')
@@ -81,7 +80,7 @@ def new_outlook_key(request):
 
 @login_required
 def key_index(request):
-	redirect_uri = request.build_absolute_uri(reverse('outlook:gettoken'))
+	redirect_uri = request.build_absolute_uri(reverse('outlook:gettoken', kwargs={'user_id': request.user.id}))
 	key_list = OutlookKey.objects.filter(user=request.user).all()
 	paginator = Paginator(key_list, 50)
 	page = request.GET.get('page')
@@ -110,7 +109,8 @@ def key_index(request):
 
 @login_required
 def tutorial(request):
-	return render(request, 'outlook/tutorial.html')
+	context = {'user_id': request.user.id}
+	return render(request, 'outlook/tutorial.html', context)
 
 
 class KeyDelete(DeleteView):

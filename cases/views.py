@@ -163,7 +163,7 @@ class CaseCreateView(CreateView):
         associated Ingredients and Instructions and then redirects to a
         success page.
         """
-        access_token = get_access_token(self.request, self.request.build_absolute_uri(reverse('outlook:gettoken')))
+        access_token = get_access_token(self.request, self.request.build_absolute_uri(reverse('outlook:gettoken', kwargs={'user_id': self.request.user.id})))
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.color = self.__get_color_code()
