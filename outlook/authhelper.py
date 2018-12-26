@@ -93,6 +93,8 @@ def get_token_from_refresh_token(refresh_token, redirect_uri, outlook_app_id, ou
 def get_access_token(request, redirect_uri):
 	if 'access_token' not in request.session:
 		outlook_key = OutlookKey.objects.filter(user=request.user, valid=True).first()
+		if not outlook_key or not outlook_key.valid:
+			return False
 		refresh_token = outlook_key.refresh_token
 		new_tokens = get_token_from_refresh_token(refresh_token, redirect_uri, outlook_key.outlook_app_id,
 		                                          outlook_key.outlook_app_key)
