@@ -105,3 +105,8 @@ def key_index(request):
 			create_access = True
 
 	return render(request, 'outlook/key_index.html', {'keys': keys, 'create_access': create_access})
+
+
+@login_required
+def tutorial(request):
+	return render(request, 'outlook/tutorial.html')

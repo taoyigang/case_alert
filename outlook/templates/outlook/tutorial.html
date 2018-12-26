@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="well">
+  Step 1: Click button to add an App
+</div>
+<img src="{% static '/outlook/step1.PNG' %}" alt="step 1">
+<div class="well">
+  Step 2: register your App
+</div>
+<img src="{% static '/outlook/step2.PNG' %}" alt="step 2">
+<div class="well">
+  Step 3: generate your app password
+</div>
+<img src="{% static '/outlook/step3.PNG' %}" alt="step 3">
+<div class="well">
+  Step 4: COPY your app password to safe place
+</div>
+<img src="{% static '/outlook/step4.PNG' %}" alt="step 4">
+<div class="well">
+  Step 5: choose your app type
+</div>
+<img src="{% static '/outlook/step5.PNG' %}" alt="step 5">
+<div class="well">
+  Step 6: select "Web"
+</div>
+<img src="{% static '/outlook/step6.PNG' %}" alt="step 6">
+<div class="well">
+  Step 6: add "https://secure-citadel-20778.herokuapp.com/outlook/gettoken" to redirect URLs
+</div>
+<img src="{% static '/outlook/step7.PNG' %}" alt="step 7">
+<div class="well">
+  save your change, and you are all set!
+</div>
+<img src="{% static '/outlook/finish.PNG' %}" alt="finish">
+{% endblock %}

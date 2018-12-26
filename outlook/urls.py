@@ -8,5 +8,6 @@ urlpatterns = [
 	url(r'^gettoken/$', views.gettoken, name='gettoken'),
 	url(r'^events/$', views.events, name='events'),
 	url(r'^new/$', views.new_outlook_key, name='new_outlook_key'),
+	url(r'^tutorial/$', views.tutorial, name='tutorial'),
 	url(r'^index/$', views.key_index, name='key_index'),
 ]
