@@ -13,6 +13,7 @@
           <th>Application ID</th>
           <th>Application Key</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -22,12 +23,14 @@
               <td>{{ key.outlook_app_id }}</td>
               <td>{{ key.outlook_app_key }}</td>
               <td><span class="label label-success">Active</span></td>
+              <td><a href="{% url 'outlook:key_delete' key.id %}">delete</a></td>
             </tr>
           {% else %}
               <tr class="warning">
                 <td>{{ key.outlook_app_id }}</td>
                 <td>{{ key.outlook_app_key }}</td>
                 <td><a href="{{ key.sign_in_url }}" class="btn btn-primary btn-sm">Activate</a></td>
+                <td><a href="{% url 'outlook:key_delete' key.id %}">delete</a></td>
               </tr>
           {% endif %}
         {% endfor %}

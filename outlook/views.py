@@ -110,3 +110,9 @@ def key_index(request):
 @login_required
 def tutorial(request):
 	return render(request, 'outlook/tutorial.html')
+
+
+class KeyDelete(DeleteView):
+	model = OutlookKey
+	template_name = 'outlook/delete.html'
+	success_url = reverse_lazy('outlook:key_index')

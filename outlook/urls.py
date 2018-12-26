@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^new/$', views.new_outlook_key, name='new_outlook_key'),
 	url(r'^tutorial/$', views.tutorial, name='tutorial'),
 	url(r'^index/$', views.key_index, name='key_index'),
+	url(r'^delete/(?P<pk>\d+)/$', login_required(views.KeyDelete.as_view()), name='key_delete'),
 ]
