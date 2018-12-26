@@ -139,3 +139,14 @@ def make_event(obj, is_case):
 		event["start_at"] = "{}T08:30:00".format(deadline_date)
 		event["end_at"] = "{}T17:30:00".format(deadline_date)
 		return event
+	else:
+		day_diff = (obj.case.deadline - obj.alert_date).days
+		if obj.comment:
+			event['subject'] = "{},\n{}".format(obj.case.case_id, obj.comment)
+		else:
+			event['subject'] = "{},\n{} days before deadline".format(obj.case.case_id, day_diff)
+		event["content"] = "case alert for case: {}".format(obj.case_id)
+		alert_date = obj.alert_date.strftime("%Y-%m-%d")
+		event["start_at"] = "{}T08:30:00".format(alert_date)
+		event["end_at"] = "{}T17:30:00".format(alert_date)
+		return event

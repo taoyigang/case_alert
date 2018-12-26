@@ -97,6 +97,7 @@ def key_index(request):
 		if keys:
 			for key in keys:
 				key.sign_in_url = get_signin_url(redirect_uri, key.outlook_app_id)
+				key.outlook_app_key = key.outlook_app_key[:3] + '*******************'
 			for key in keys:
 				if not key.valid:
 					create_access = True

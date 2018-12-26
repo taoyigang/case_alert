@@ -178,6 +178,9 @@ class CaseCreateView(CreateView):
 
         if access_token:
             post_my_event(access_token, self.object, is_case=True)
+            alerts = Alert.objects.filter(case=self.object).all()
+            for alert in alerts:
+                post_my_event(access_token, alert, is_case=False)
         return redirect('cases:home')
 
     def form_invalid(self, form, alert_form):
